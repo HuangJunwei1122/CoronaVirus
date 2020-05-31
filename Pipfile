@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+verify_ssl = true
+
+[dev-packages]
+watchdog = "*"
+
+[packages]
+flask = "*"
+flask-wtf = "*"
+pandas = "*"
+gevent = "*"
+python-dotenv = "*"
+
+[requires]
+python_version = "3.6"

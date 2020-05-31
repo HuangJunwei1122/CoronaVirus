@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="{{ url_for('static', filename='jquery-3.5.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='echarts.min.js') }}"></script>
+    <title>COVID-19 每日确诊报告</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    {% for message in get_flashed_messages() %}
+        <div class="alert" style="background-color: #cce5ff">{{ message }}</div>
+    {% endfor %}
+    <div class="top" data-date="{{ date }}" id="top-div">
+        <div align="left">
+            <a href="https://github.com/CSSEGISandData/COVID-19" style="font-size:11px">数据来源：CSSE at Johns Hopkins University</a>
+        </div>
+        <div class="date-form" align="center">
+            <form method="post" action="{{ url_for('search') }}">
+                {{ form.csrf_token }}
+                {{ form.date(placeholder="格式如：2020-1-22") }}
+                {{ form.submit }}
+            </form>
+        </div>
+        <div class="buttons" align="right">
+            <div align="left">
+                <button type="button" id="pre" onclick="getPre()">前一天</button>
+            </div>
+            <div align="right">
+                <button type="button" id="after" onclick="getAfter()">后一天</button>
+            </div>
+        </div>
+    </div>
+    <div id="main" style="width: 1300px; height: 500px"></div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        myChart.setOption({
+            title:{
+                text:"{{ date }}",
+                left:'center',
+                subtext:"（中国香港、中国台湾等中国地区的疫情数据分别展示）",
+                subtextStyle:{align:'right'}
+            },
+            tooltip:{},
+            <!--legend:[{},{}],-->
+            xAxis:[
+            {
+                type:'category', name:'国家',
+                axisTick:{interval:0, inside:true},
+                axisLabel:{interval:0,rotate:20,align:'center',margin:20},
+                nameTextStyle:{fontWeight:'bolder'},
+                gridIndex:0
+            },{
+                type:'category', name:'国家',
+                axisTick:{interval:0, inside:true},
+                axisLabel:{interval:0,rotate:20,align:'center',margin:20},
+                nameTextStyle:{fontWeight:'bolder'},
+                gridIndex:1
+            }],
+            yAxis:[
+                {name:'累计确诊人数',nameTextStyle:{fontWeight:'bolder'},gridIndex:0},
+                {name:'当前确诊人数',nameTextStyle:{fontWeight:'bolder'},gridIndex:1}
+            ],
+            grid:[{bottom:'58%'},{top:'58%'}],
+            series:[{
+                name:'累计确诊',
+                type:'bar',
+                xAxisIndex:0,
+                yAxisIndex:0
+            },{
+                name:'当前确诊',
+                type:'bar',
+                xAxisIndex:1,
+                yAxisIndex:1
+            }]
+        });
+        myChart.showLoading();
+        $.get('/data', {date:"{{ date }}"}).done(function(data){
+            myChart.hideLoading();
+            myChart.setOption({
+                dataset:{
+                    source: data.data_set
+                },
+                series: [
+                    {name:'累计确诊', type:'bar',encode:{x:0, y:1}},
+                    {name:'累计确诊', type:'bar',encode:{x:2, y:3}}
+                ]
+            });
+        });
+        function getPre(){
+            var date = document.getElementById("top-div").getAttribute("data-date");
+            $.get('/data', {date:date, pre:'1'}).done(function(data){
+                document.getElementById("top-div").setAttribute("data-date", data.date);
+                myChart.setOption({
+                    title:{
+                        text:data.date
+                    },
+                    dataset:{
+                        source: data.data_set
+                    },
+                    series: [
+                    {name:'累计确诊', type:'bar',encode:{x:0, y:1}},
+                    {name:'累计确诊', type:'bar',encode:{x:2, y:3}}
+                    ]
+                });
+            });
+        };
+        function getAfter(){
+            var date = document.getElementById("top-div").getAttribute("data-date");
+            $.get('/data', {date:date, after:'1'}).done(function(data){
+                document.getElementById("top-div").setAttribute("data-date", data.date);
+                myChart.setOption({
+                    title:{
+                        text:data.date
+                    },
+                    dataset:{
+                        source: data.data_set
+                    },
+                    series: [
+                    {name:'累计确诊', type:'bar',encode:{x:0, y:1}},
+                    {name:'累计确诊', type:'bar',encode:{x:2, y:3}}
+                    ]
+                });
+            });
+        };
+    </script>
+
+</body>
+</html>
