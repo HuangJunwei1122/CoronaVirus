@@ -34,7 +34,11 @@ def get_confirmed(date):
     # CSV_PATH = 'D:\\PC_projests\\test\\CoronaVirus\\CoronaVirus' \
     #            '\\static\\daily_report\\{}.csv'.format(date.strftime('%m-%d-%Y'))
     path = os.path.join(CSV_PATH, '{}.csv'.format(date.strftime('%m-%d-%Y')))
-    df_daily = pd.read_csv(path)
+    try:
+        df_daily = pd.read_csv(path)
+    except FileNotFoundError:
+        fetch_daily()
+        df_daily = pd.read_csv(path)
     df_daily = df_daily[['Country_Region', 'Confirmed', 'Deaths', 'Recovered']]
     except_dup = df_daily['Country_Region'].drop_duplicates(keep=False)
     unique_counties = df_daily['Country_Region'].drop_duplicates(keep='first')

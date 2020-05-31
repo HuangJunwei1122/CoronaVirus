@@ -2,8 +2,9 @@ import os
 import pandas as pd
 import gevent
 from gevent import monkey
+import datetime
 
-from CoronaVirus.utils import URL, ONE_DAY, START_DAY, TODAY, CSV_PATH
+from CoronaVirus.utils import URL, ONE_DAY, TODAY, CSV_PATH
 
 monkey.patch_all()
 
@@ -11,8 +12,8 @@ monkey.patch_all()
 # URL = r'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/' \
 #       r'csse_covid_19_data/csse_covid_19_daily_reports/{}.csv'
 # ONE_DAY = datetime.timedelta(days=1)
-# START_DAY = datetime.date(2020, 1, 22)
-# today = datetime.date(2020, 1, 31)
+START_DAY = datetime.date(2020, 6, 22)
+today = datetime.date(2020, 1, 31)
 # TODAY = datetime.datetime.utcnow().date()
 download_num = (TODAY - START_DAY).days
 urls = [(URL.format((START_DAY + i * ONE_DAY).strftime('%m-%d-%Y')),
