@@ -7,5 +7,3 @@ app.jinja_env.lstrip_blocks = True
 
 from CoronaVirus import views
 
-if __name__ == '__main__':
-    app.run()
