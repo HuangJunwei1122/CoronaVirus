@@ -1,6 +1,5 @@
 import os
 
-from CoronaVirus import app
 
+SECRET_KEY = os.getenv('SECRET_KEY', os.urandom(12))
 
-SECRET_KEY = os.getenv('SECRET_KEY', "hello, I'm a secret key")
