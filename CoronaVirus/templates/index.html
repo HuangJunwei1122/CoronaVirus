@@ -75,9 +75,9 @@
                 yAxisIndex:1
             }]
         });
-        myChart.showLoading();
+        <!--myChart.showLoading();-->
         $.get('/data', {date:"{{ date }}"}).done(function(data){
-            myChart.hideLoading();
+            <!--myChart.hideLoading();-->
             myChart.setOption({
                 dataset:{
                     source: data.data_set

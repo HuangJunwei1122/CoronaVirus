@@ -6,6 +6,7 @@ import os
 
 
 def output_one_csv():
+    print(os.path.dirname(__file__))
     url_daily = os.path.join(os.path.dirname(__file__), 'static/daily_report/05-27-2020.csv')
     df_daily = pd.read_csv(url_daily)
     df_daily = df_daily.loc[:, ['Country_Region', 'Confirmed', 'Deaths', 'Recovered']]

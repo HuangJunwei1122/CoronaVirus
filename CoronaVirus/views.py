@@ -48,5 +48,6 @@ def data():
 
 @app.route('/test')
 def test():
+    output_one_csv()
     fetch_daily()
     return redirect(url_for('index'))
