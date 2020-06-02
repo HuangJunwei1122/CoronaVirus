@@ -1,4 +1,4 @@
-from flask import flash, url_for, render_template, redirect, jsonify, request
+from flask import flash, url_for, render_template, redirect, jsonify, request, session
 import datetime
 
 from CoronaVirus import app
@@ -19,7 +19,7 @@ def search():
     form = DateForm()
     if form.validate_on_submit():
         date = form.date.data
-        print(type(date), date)
+        # print(type(date), date)
         if verify_date(date):
             print('正确')
             return redirect(url_for('index', date=date.strftime('%Y-%m-%d')))
@@ -49,5 +49,5 @@ def data():
 @app.route('/test')
 def test():
     # output_one_csv()
-    fetch_daily()
+    # fetch_daily()
     return redirect(url_for('index'))
