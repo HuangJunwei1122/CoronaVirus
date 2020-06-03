@@ -17,7 +17,8 @@
             <a href="https://github.com/CSSEGISandData/COVID-19" style="font-size:11px">数据来源：CSSE at Johns Hopkins University</a>
         </div>
         <div class="date-form" align="center">
-            <form method="post" action="{{ url_for('search') }}">
+            <!--<form method="post" action="{{ url_for('search') }}">-->
+            <form method="post">
                 <!--{{ form.csrf_token }}-->
                 {{ form.date(placeholder="格式如：2020-1-22") }}
                 {{ form.submit }}
