@@ -18,7 +18,7 @@
         </div>
         <div class="date-form" align="center">
             <form method="post" action="{{ url_for('search') }}">
-                {{ form.csrf_token }}
+                <!--{{ form.csrf_token }}-->
                 {{ form.date(placeholder="格式如：2020-1-22") }}
                 {{ form.submit }}
             </form>
