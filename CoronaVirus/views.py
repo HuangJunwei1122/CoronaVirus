@@ -13,7 +13,7 @@ from CoronaVirus.utils import TODAY, ONE_DAY, LAST_DAY, START_DAY, get_confirmed
 @app.route('/', defaults={'date': LAST_DAY.strftime('%Y-%m-%d')})
 def index(date):
     form = DateForm()
-    # flash('输入日期范围：2020-1-22至{}'.format(LAST_DAY))
+    flash('输入日期范围：2020-1-22至{}'.format(LAST_DAY))
     return render_template('index.html', form=form, date=date)
 
 
