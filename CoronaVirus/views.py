@@ -1,7 +1,9 @@
 from flask import flash, url_for, render_template, redirect, jsonify, request, session
+from flask_wtf.csrf import validate_csrf
+from wtforms import ValidationError
 import datetime
 
-from CoronaVirus import app, csrf
+from CoronaVirus import app
 from CoronaVirus.forms import DateForm
 from CoronaVirus.get_daily_confirmed import output_one_csv
 from CoronaVirus.utils import TODAY, ONE_DAY, LAST_DAY, START_DAY, get_confirmed, verify_date, fetch_daily
@@ -11,23 +13,26 @@ from CoronaVirus.utils import TODAY, ONE_DAY, LAST_DAY, START_DAY, get_confirmed
 @app.route('/', defaults={'date': LAST_DAY.strftime('%Y-%m-%d')})
 def index(date):
     form = DateForm()
+    flash('输入日期范围：2020-1-22至{}'.format(LAST_DAY))
     return render_template('index.html', form=form, date=date)
 
 
-@csrf.exempt
 @app.route('/search', methods=['POST'])
 def search():
     form = DateForm()
-    if form.validate_on_submit():
+    if request.method == 'POST':
+        try:
+            validate_csrf(form.csrf_token.data)
+        except ValidationError:
+            flash('CSRF token error.')
+            return redirect(url_for('index'))
         date = form.date.data
-        # print(type(date), date)
-        if verify_date(date):
+        if not date:
+            flash('请输入正确格式的日期')
+        elif verify_date(date):
             # print('正确')
             return redirect(url_for('index', date=date.strftime('%Y-%m-%d')))
-        flash('请输入2020-1-22至{}的日期'.format(LAST_DAY))
-    else:
-        # print(form.errors)
-        flash('请输入正确格式的日期')
+        # flash('请输入2020-1-22至{}的日期'.format(LAST_DAY))
     return redirect(url_for('index'))
 
 
