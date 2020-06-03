@@ -1,7 +1,7 @@
 from flask import flash, url_for, render_template, redirect, jsonify, request, session
 import datetime
 
-from CoronaVirus import app
+from CoronaVirus import app, csrf
 from CoronaVirus.forms import DateForm
 from CoronaVirus.get_daily_confirmed import output_one_csv
 from CoronaVirus.utils import TODAY, ONE_DAY, LAST_DAY, START_DAY, get_confirmed, verify_date, fetch_daily
