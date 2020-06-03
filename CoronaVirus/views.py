@@ -1,7 +1,7 @@
 from flask import flash, url_for, render_template, redirect, jsonify, request, session
 import datetime
 
-from CoronaVirus import app, csrf
+from CoronaVirus import app
 from CoronaVirus.forms import DateForm
 from CoronaVirus.get_daily_confirmed import output_one_csv
 from CoronaVirus.utils import TODAY, ONE_DAY, LAST_DAY, START_DAY, get_confirmed, verify_date, fetch_daily
@@ -21,10 +21,11 @@ def search():
         date = form.date.data
         # print(type(date), date)
         if verify_date(date):
-            print('正确')
+            # print('正确')
             return redirect(url_for('index', date=date.strftime('%Y-%m-%d')))
         flash('请输入2020-1-22至{}的日期'.format(LAST_DAY))
     else:
+        # print(form.errors)
         flash('请输入正确格式的日期')
     return redirect(url_for('index'))
 
