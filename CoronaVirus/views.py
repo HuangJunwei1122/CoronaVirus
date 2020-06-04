@@ -27,9 +27,8 @@ def index(date):
         elif verify_date(date):
             # print('正确')
             return redirect(url_for('index', date=date.strftime('%Y-%m-%d')))
-        else:
-            flash('请输入2020-1-22至{}的日期'.format(LAST_DAY))
-            return redirect(url_for('index'))
+        flash('请输入2020-1-22至{}的日期'.format(LAST_DAY))
+        return redirect(url_for('index'))
     return render_template('index.html', form=form, date=date)
 
 
