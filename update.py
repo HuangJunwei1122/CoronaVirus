@@ -1,10 +1,10 @@
 import sys
-import os
-import pandas as pd
+import datetime
 import gevent
 from gevent import monkey
-from CoronaVirus.utils import fetch_daily, URL, ONE_DAY, START_DAY, TODAY, download_data
-
+from CoronaVirus.utils import fetch_daily, URL, ONE_DAY, START_DAY, download_data
+TODAY = datetime.datetime.utcnow().date()
+LAST_DAY = TODAY - ONE_DAY
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
@@ -14,7 +14,10 @@ if __name__ == '__main__':
         print(hint)
     elif len(sys.argv) == 2:
         if sys.argv[1] == 'today':
-            fetch_daily()
+            # fetch_daily()
+            url = URL.format(LAST_DAY.strftime('%m-%d-%Y'))
+            name = LAST_DAY.strftime('%m-%d-%Y') + '.csv'
+            download_data(url, name)
         elif sys.argv[1] == 'all':
             monkey.patch_all()
             download_num = (TODAY - START_DAY).days
